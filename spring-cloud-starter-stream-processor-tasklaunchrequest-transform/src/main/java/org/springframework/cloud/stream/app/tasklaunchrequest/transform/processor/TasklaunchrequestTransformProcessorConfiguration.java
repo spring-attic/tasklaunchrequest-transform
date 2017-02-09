@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 the original author or authors.
+ * Copyright 2016-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,6 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.cloud.task.launcher.TaskLaunchRequest;
 import org.springframework.integration.annotation.Transformer;
-import org.springframework.messaging.support.GenericMessage;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -39,6 +38,7 @@ import org.springframework.util.StringUtils;
  * for a task and outputs a {@link TaskLaunchRequest} message.
  *
  * @author Glenn Renfro
+ * @author Artem Bilan
  */
 @EnableBinding(Processor.class)
 @EnableConfigurationProperties(TasklaunchrequestTransformProcessorProperties.class)
@@ -83,8 +83,11 @@ public class TasklaunchrequestTransformProcessorConfiguration {
 		}
 
 		TaskLaunchRequest request = new TaskLaunchRequest(
-				processorProperties.getUri(), commandLineArgs, properties,
-				deploymentProperties);
+				processorProperties.getUri(),
+				commandLineArgs,
+				properties,
+				deploymentProperties,
+				null);
 
 		return request;
 	}

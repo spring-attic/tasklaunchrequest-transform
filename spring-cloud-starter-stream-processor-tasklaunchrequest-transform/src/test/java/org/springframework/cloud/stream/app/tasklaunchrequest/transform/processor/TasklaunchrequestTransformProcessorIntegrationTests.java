@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2015-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,10 @@
 
 package org.springframework.cloud.stream.app.tasklaunchrequest.transform.processor;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.springframework.cloud.stream.test.matcher.MessageQueueMatcher.receivesPayloadThat;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,39 +30,33 @@ import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.WebIntegrationTest;
-import org.springframework.cloud.stream.annotation.Bindings;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.cloud.task.launcher.TaskLaunchRequest;
 import org.springframework.integration.transformer.MessageTransformationException;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.springframework.cloud.stream.test.matcher.MessageQueueMatcher.receivesPayloadThat;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * Tests for TasklaunchrequestTransformIntegrationProcessor.
  *
  * @author Glenn Renfro
+ * @author Artem Bilan
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes =
-		TasklaunchrequestTransformProcessorIntegrationTests.
-				TasklaunchrequestTransformProcessorApplication.class)
-@WebIntegrationTest(randomPort = true)
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE,
+		classes =
+				TasklaunchrequestTransformProcessorIntegrationTests.
+						TasklaunchrequestTransformProcessorApplication.class)
 @DirtiesContext
 public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 
 	public static final String DEFAULT_URI = "MY_URI";
 
 	@Autowired
-	@Bindings(TasklaunchrequestTransformProcessorConfiguration.class)
 	protected Processor channels;
 
 	@Autowired
@@ -67,12 +65,12 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 	/**
 	 * Validates that the app loads with default properties.
 	 */
-	@IntegrationTest({"uri=" + DEFAULT_URI})
+	@TestPropertySource(properties = "uri=" + DEFAULT_URI)
 	public static class UsingDefaultIntegrationTests extends
 			TasklaunchrequestTransformProcessorIntegrationTests {
 
 		@Test
-		public void test() throws InterruptedException{
+		public void test() throws InterruptedException {
 			channels.input().send(new GenericMessage<Object>("hello"));
 			channels.input().send(new GenericMessage<Object>("hello world"));
 			channels.input().send(new GenericMessage<Object>("hi!"));
@@ -89,7 +87,7 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 			TasklaunchrequestTransformProcessorIntegrationTests {
 
 		@Test(expected = MessageTransformationException.class)
-		public void test() throws InterruptedException{
+		public void test() throws InterruptedException {
 			channels.input().send(new GenericMessage<Object>("hello"));
 		}
 	}
@@ -97,12 +95,12 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 	/**
 	 * Validates that the app handles empty payload.
 	 */
-	@IntegrationTest({"uri=" + DEFAULT_URI})
+	@TestPropertySource(properties = "uri=" + DEFAULT_URI)
 	public static class UsingEmptyPayloadIntegrationTests extends
 			TasklaunchrequestTransformProcessorIntegrationTests {
 
 		@Test()
-		public void test() throws InterruptedException{
+		public void test() throws InterruptedException {
 			channels.input().send(new GenericMessage<Object>(""));
 			assertThat(collector.forChannel(channels.output()),
 					receivesPayloadThat(is(getDefaultRequest())));
@@ -112,11 +110,11 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 	/**
 	 * Verify datasource properties are added to the TaskLaunchRequest.
 	 */
-	@IntegrationTest({"dataSourceUrl=myUrl",
+	@TestPropertySource(properties = { "dataSourceUrl=myUrl",
 			"dataSourcePassword=myPassword",
 			"dataSourceUserName=myUserName",
 			"dataSourceDriverClassName=myClassName",
-			"uri=" + DEFAULT_URI})
+			"uri=" + DEFAULT_URI })
 	public static class UsingDataSourceIntegrationTests
 			extends TasklaunchrequestTransformProcessorIntegrationTests {
 
@@ -137,8 +135,9 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 	/**
 	 * Verify deploymentProperties are added to the TaskLaunchRequest.
 	 */
-	@IntegrationTest({"deploymentProperties=app.wow.hello=world,app.wow.foo=bar,app.wow.test=a=b,c=d,e=\"baz=bbb,nnn=mmm\"",
-			"uri=" + DEFAULT_URI})
+	@TestPropertySource(properties = {
+			"deploymentProperties=app.wow.hello=world,app.wow.foo=bar,app.wow.test=a=b,c=d,e=\"baz=bbb,nnn=mmm\"",
+			"uri=" + DEFAULT_URI })
 	public static class UsingDeploymentPropertiesIntegrationTests
 			extends TasklaunchrequestTransformProcessorIntegrationTests {
 
@@ -162,8 +161,9 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 	/**
 	 *  Verify commandLineArguments are added to the TaskLaunchRequest.
 	 */
-	@IntegrationTest({"commandLineArguments=--hello=world --foo=bar",
-			"uri=" + DEFAULT_URI})
+	@TestPropertySource(properties = {
+			"commandLineArguments=--hello=world --foo=bar",
+			"uri=" + DEFAULT_URI })
 	public static class UsingCommandLineArgsIntegrationTests
 			extends TasklaunchrequestTransformProcessorIntegrationTests {
 
@@ -186,14 +186,15 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 	}
 
 	protected TaskLaunchRequest getDefaultRequest(
-			Map <String,String> environmentVariables,
-			Map<String,String> deploymentProperties,
+			Map<String, String> environmentVariables,
+			Map<String, String> deploymentProperties,
 			List<String> commandLineArgs) {
 		TaskLaunchRequest request = new TaskLaunchRequest(
 				DEFAULT_URI,
 				commandLineArgs,
 				environmentVariables,
-				deploymentProperties);
+				deploymentProperties,
+				"test");
 		return request;
 	}
 
