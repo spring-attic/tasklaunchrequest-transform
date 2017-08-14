@@ -5,6 +5,21 @@ Use the task launch request transform in a stream to create a TaskLaunchRequest
 to be passed to the output channel.  The TaskLaunchRequest is used by a
 TaskLauncher to launch tasks on the platform.
 
+== Input
+
+Any input type.  (payload and header are discarded)
+
+== Output
+
+=== Headers:
+
+* `Content-Type: application/octet-stream`
+
+=== Payload:
+
+A  byte array containing the `TaskLaunchRequest`
+
+
 == Options
 
 The **$$tasklaunchrequest$$** $$processor$$ has the following options:
@@ -21,9 +36,16 @@ $$deployment-properties$$:: $$Comma delimited list of deployment properties to b
 $$uri$$:: $$The uri of the artifact to be applied to the TaskLaunchRequest.$$ *($$String$$, default: `$$<none>$$`)*
 //end::configuration-properties[]
 
-//end::ref-doc[]
 == Building with Maven
 
 ```
 $> mvn package
 ```
+
+=== Examples
+
+```
+java -jar tasklaunchrequest_transform_processor.jar --uri=maven://org.springframework.cloud.task.app:timestamp-task:1.2.0.RELEASE
+```
+
+//end::ref-doc[]
