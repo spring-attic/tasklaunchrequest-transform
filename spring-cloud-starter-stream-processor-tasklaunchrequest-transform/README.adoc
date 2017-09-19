@@ -25,6 +25,7 @@ A  byte array containing the `TaskLaunchRequest`
 The **$$tasklaunchrequest$$** $$processor$$ has the following options:
 
 //tag::configuration-properties[]
+$$application-name$$:: $$The name to be applied to the launched task.$$ *($$String$$, default: `$$<empty string>$$`)*
 $$command-line-arguments$$:: $$Space delimited list of commandLineArguments to be applied to the
   TaskLaunchRequest.$$ *($$String$$, default: `$$<none>$$`)*
 $$data-source-driver-class-name$$:: $$The datasource driver class name to be applied to the TaskLaunchRequest.$$ *($$String$$, default: `$$<none>$$`)*

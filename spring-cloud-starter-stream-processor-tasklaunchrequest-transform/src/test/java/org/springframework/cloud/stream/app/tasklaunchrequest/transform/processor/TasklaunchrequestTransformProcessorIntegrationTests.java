@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.stream.app.tasklaunchrequest.transform.processor;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.springframework.cloud.stream.test.matcher.MessageQueueMatcher.receivesPayloadThat;
@@ -114,12 +115,13 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 			"dataSourcePassword=myPassword",
 			"dataSourceUserName=myUserName",
 			"dataSourceDriverClassName=myClassName",
-			"uri=" + DEFAULT_URI })
+			"uri=" + DEFAULT_URI,
+	        "applicationName=fooTest"})
 	public static class UsingDataSourceIntegrationTests
 			extends TasklaunchrequestTransformProcessorIntegrationTests {
 
 		@Test
-		public void test() throws InterruptedException {
+		public void testDataSources() throws InterruptedException {
 			channels.input().send(new GenericMessage<Object>("hello"));
 			Map<String, String> environmentVariables = new HashMap<>(4);
 			environmentVariables.put("spring_datasource_url", "myUrl");
@@ -129,6 +131,13 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 			assertThat(collector.forChannel(channels.output()),
 					receivesPayloadThat(is(getDefaultRequest(
 							environmentVariables, null, null))));
+		}
+
+		@Test
+		public void testForApplicationName() throws InterruptedException {
+			channels.input().send(new GenericMessage<Object>("hello"));
+			TaskLaunchRequest result = (TaskLaunchRequest) collector.forChannel(channels.output()).take().getPayload();
+			assertThat(result.getApplicationName(), is(equalTo("fooTest")));
 		}
 	}
 

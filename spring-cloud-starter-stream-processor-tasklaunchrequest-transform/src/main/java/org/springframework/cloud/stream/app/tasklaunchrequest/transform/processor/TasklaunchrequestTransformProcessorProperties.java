@@ -60,6 +60,10 @@ public class TasklaunchrequestTransformProcessorProperties {
 	 */
 	private String deploymentProperties;
 
+	/**
+	 * The name to be applied to the launched task.
+	 */
+	private String applicationName = "";
 
 	public String getDataSourceUrl() {
 		return dataSourceUrl;
@@ -115,5 +119,13 @@ public class TasklaunchrequestTransformProcessorProperties {
 
 	public void setDeploymentProperties(String deploymentProperties) {
 		this.deploymentProperties = deploymentProperties;
+	}
+
+	public String getApplicationName() {
+		return applicationName;
+	}
+
+	public void setApplicationName(String applicationName) {
+		this.applicationName = applicationName;
 	}
 }

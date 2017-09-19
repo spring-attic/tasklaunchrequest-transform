@@ -62,6 +62,7 @@ public class TasklaunchrequestTransformProcessorConfiguration {
 		Map<String, String> properties = new HashMap<String, String>();
 		Map<String, String> deploymentProperties = null;
 		List<String> commandLineArgs = null;
+		String applicationName = null;
 
 		if (StringUtils.hasText(processorProperties.getDataSourceUrl())) {
 			properties.put("spring_datasource_url", processorProperties.getDataSourceUrl());
@@ -81,13 +82,16 @@ public class TasklaunchrequestTransformProcessorConfiguration {
 		if (StringUtils.hasLength(processorProperties.getCommandLineArguments())) {
 			commandLineArgs = parseParams(processorProperties.getCommandLineArguments());
 		}
+		if(StringUtils.hasText(processorProperties.getApplicationName())) {
+			applicationName = processorProperties.getApplicationName();
+		}
 
 		TaskLaunchRequest request = new TaskLaunchRequest(
 				processorProperties.getUri(),
 				commandLineArgs,
 				properties,
 				deploymentProperties,
-				null);
+				applicationName);
 
 		return request;
 	}
