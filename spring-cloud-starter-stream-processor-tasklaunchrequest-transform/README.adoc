@@ -34,6 +34,8 @@ $$data-source-url$$:: $$The datasource url to be applied to the TaskLaunchReques
 $$data-source-user-name$$:: $$The datasource user name to be applied to the TaskLaunchRequest.$$ *($$String$$, default: `$$<none>$$`)*
 $$deployment-properties$$:: $$Comma delimited list of deployment properties to be applied to the
  TaskLaunchRequest.$$ *($$String$$, default: `$$<none>$$`)*
+$$environment-properties$$:: $$Comma delimited list of environment properties to be applied to the
+ TaskLaunchRequest.$$ *($$String$$, default: `$$<none>$$`)*
 $$uri$$:: $$The uri of the artifact to be applied to the TaskLaunchRequest.$$ *($$String$$, default: `$$<none>$$`)*
 //end::configuration-properties[]
 

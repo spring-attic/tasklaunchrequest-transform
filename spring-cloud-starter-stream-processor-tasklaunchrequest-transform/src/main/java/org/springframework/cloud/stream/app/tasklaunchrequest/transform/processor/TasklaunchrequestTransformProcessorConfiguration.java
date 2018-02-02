@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2017 the original author or authors.
+ * Copyright 2016-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,9 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.cloud.task.launcher.TaskLaunchRequest;
 import org.springframework.integration.annotation.Transformer;
+import org.springframework.integration.support.MessageBuilder;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -58,7 +61,7 @@ public class TasklaunchrequestTransformProcessorConfiguration {
 	private TasklaunchrequestTransformProcessorProperties processorProperties;
 
 	@Transformer(inputChannel = Processor.INPUT, outputChannel = Processor.OUTPUT)
-	public Object setupRequest(String message) {
+	public Object setupRequest(Message<?> message) throws Exception{
 		Map<String, String> properties = new HashMap<String, String>();
 		Map<String, String> deploymentProperties = null;
 		List<String> commandLineArgs = null;
@@ -85,6 +88,9 @@ public class TasklaunchrequestTransformProcessorConfiguration {
 		if(StringUtils.hasText(processorProperties.getApplicationName())) {
 			applicationName = processorProperties.getApplicationName();
 		}
+		if(StringUtils.hasText(processorProperties.getEnvironmentProperties())) {
+			properties = parse(processorProperties.getEnvironmentProperties());
+		}
 
 		TaskLaunchRequest request = new TaskLaunchRequest(
 				processorProperties.getUri(),
@@ -92,8 +98,12 @@ public class TasklaunchrequestTransformProcessorConfiguration {
 				properties,
 				deploymentProperties,
 				applicationName);
-
-		return request;
+		Map<String, Object> headerMap = new HashMap<>(message.getHeaders());
+		headerMap.put("contentType", "application/json");
+		MessageHeaders messageHeaders = new MessageHeaders(headerMap);
+		Message messageResponse = MessageBuilder.withPayload(request).
+				copyHeaders(messageHeaders).build();
+		return messageResponse;
 	}
 
 	/**

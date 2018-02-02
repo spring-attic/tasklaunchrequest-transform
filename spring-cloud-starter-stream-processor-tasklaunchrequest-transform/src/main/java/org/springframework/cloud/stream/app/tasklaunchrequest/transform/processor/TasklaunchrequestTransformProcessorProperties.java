@@ -55,6 +55,12 @@ public class TasklaunchrequestTransformProcessorProperties {
 	private String commandLineArguments;
 
 	/**
+	 * Comma delimited list of environment properties to be applied to the
+	 * TaskLaunchRequest.
+	 */
+	private String environmentProperties;
+
+	/**
 	 * Comma delimited list of deployment properties to be applied to the
 	 * TaskLaunchRequest.
 	 */
@@ -127,5 +133,13 @@ public class TasklaunchrequestTransformProcessorProperties {
 
 	public void setApplicationName(String applicationName) {
 		this.applicationName = applicationName;
+	}
+
+	public String getEnvironmentProperties() {
+		return environmentProperties;
+	}
+
+	public void setEnvironmentProperties(String environmentProperties) {
+		this.environmentProperties = environmentProperties;
 	}
 }
