@@ -31,7 +31,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.cloud.task.launcher.TaskLaunchRequest;
+import org.springframework.integration.support.MessageBuilder;
 import org.springframework.integration.transformer.MessageTransformationException;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
@@ -81,6 +84,14 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 			validateDefault((String) collector.forChannel(channels.output()).take().getPayload());
 			validateDefault((String) collector.forChannel(channels.output()).take().getPayload());
 			validateDefault((String) collector.forChannel(channels.output()).take().getPayload());
+		}
+
+		@Test
+		public void testHeaderContentTypeProperlySet() throws Exception {
+			Message<?> message = MessageBuilder.withPayload("hello").setHeader(MessageHeaders.CONTENT_TYPE, "text/plain").build();
+			channels.input().send(message);
+			Message<?> outputMessage = collector.forChannel(channels.output()).take();
+			assertThat(outputMessage.getHeaders().get(MessageHeaders.CONTENT_TYPE)).isEqualTo("application/json");
 		}
 
 		private void validateDefault(String result) throws Exception{
