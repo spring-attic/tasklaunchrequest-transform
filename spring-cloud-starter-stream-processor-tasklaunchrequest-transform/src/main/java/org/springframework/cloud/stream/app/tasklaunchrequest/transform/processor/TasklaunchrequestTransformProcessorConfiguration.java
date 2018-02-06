@@ -29,9 +29,6 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.cloud.task.launcher.TaskLaunchRequest;
 import org.springframework.integration.annotation.Transformer;
-import org.springframework.integration.support.MessageBuilder;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -61,7 +58,7 @@ public class TasklaunchrequestTransformProcessorConfiguration {
 	private TasklaunchrequestTransformProcessorProperties processorProperties;
 
 	@Transformer(inputChannel = Processor.INPUT, outputChannel = Processor.OUTPUT)
-	public Object setupRequest(Message<?> message) throws Exception{
+	public Object setupRequest(String data) throws Exception{
 		Map<String, String> properties = new HashMap<String, String>();
 		Map<String, String> deploymentProperties = null;
 		List<String> commandLineArgs = null;
@@ -99,10 +96,7 @@ public class TasklaunchrequestTransformProcessorConfiguration {
 				deploymentProperties,
 				applicationName);
 
-		Message messageResponse = MessageBuilder.withPayload(request).
-				copyHeaders(message.getHeaders()).
-				removeHeader(MessageHeaders.CONTENT_TYPE).build();
-		return messageResponse;
+		return request;
 	}
 
 	/**
