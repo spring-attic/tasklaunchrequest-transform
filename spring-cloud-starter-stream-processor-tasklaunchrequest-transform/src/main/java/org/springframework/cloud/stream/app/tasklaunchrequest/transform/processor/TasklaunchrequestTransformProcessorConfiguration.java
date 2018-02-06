@@ -98,11 +98,10 @@ public class TasklaunchrequestTransformProcessorConfiguration {
 				properties,
 				deploymentProperties,
 				applicationName);
-		Map<String, Object> headerMap = new HashMap<>(message.getHeaders());
-		headerMap.remove("contentType");
-		MessageHeaders messageHeaders = new MessageHeaders(headerMap);
+
 		Message messageResponse = MessageBuilder.withPayload(request).
-				copyHeaders(messageHeaders).build();
+				copyHeaders(message.getHeaders()).
+				removeHeader(MessageHeaders.CONTENT_TYPE).build();
 		return messageResponse;
 	}
 
