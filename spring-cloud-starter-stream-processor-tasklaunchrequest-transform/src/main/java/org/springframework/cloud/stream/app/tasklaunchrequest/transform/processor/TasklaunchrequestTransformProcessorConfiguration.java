@@ -99,7 +99,7 @@ public class TasklaunchrequestTransformProcessorConfiguration {
 				deploymentProperties,
 				applicationName);
 		Map<String, Object> headerMap = new HashMap<>(message.getHeaders());
-		headerMap.put("contentType", "application/json");
+		headerMap.remove("contentType");
 		MessageHeaders messageHeaders = new MessageHeaders(headerMap);
 		Message messageResponse = MessageBuilder.withPayload(request).
 				copyHeaders(messageHeaders).build();
