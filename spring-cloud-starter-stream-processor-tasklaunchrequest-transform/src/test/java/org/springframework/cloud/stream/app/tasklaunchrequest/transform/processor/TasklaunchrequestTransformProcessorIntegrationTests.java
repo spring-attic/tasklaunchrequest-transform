@@ -127,7 +127,7 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 	public static class UsingEmptyPayloadIntegrationTests extends
 			TasklaunchrequestTransformProcessorIntegrationTests {
 
-		@Test(expected = MethodArgumentNotValidException.class)
+		@Test()
 		public void test() throws Exception {
 			channels.input().send(new GenericMessage<Object>(""));
 			assertThat(collector.forChannel(channels.output()),

@@ -29,6 +29,8 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.cloud.task.launcher.TaskLaunchRequest;
+import org.springframework.integration.annotation.ServiceActivator;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -58,9 +60,10 @@ public class TasklaunchrequestTransformProcessorConfiguration {
 	@Autowired
 	private TasklaunchrequestTransformProcessorProperties processorProperties;
 
-	@StreamListener(Processor.INPUT)
-	@SendTo(Processor.OUTPUT)
-	public Object setupRequest(String data) throws Exception{
+//	@StreamListener(Processor.INPUT)
+//	@SendTo(Processor.OUTPUT)
+	@ServiceActivator(inputChannel = Processor.INPUT, outputChannel = Processor.OUTPUT)
+	public Object setupRequest(Message<?> data) throws Exception{
 		Map<String, String> properties = new HashMap<String, String>();
 		Map<String, String> deploymentProperties = null;
 		List<String> commandLineArgs = null;
