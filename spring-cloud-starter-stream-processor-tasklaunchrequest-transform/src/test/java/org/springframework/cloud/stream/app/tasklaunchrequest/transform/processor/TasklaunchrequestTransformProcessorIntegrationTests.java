@@ -31,10 +31,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.cloud.task.launcher.TaskLaunchRequest;
+import org.springframework.http.MediaType;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.integration.transformer.MessageTransformationException;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.MessagingException;
+import org.springframework.messaging.handler.annotation.support.MethodArgumentNotValidException;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
@@ -91,7 +94,7 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 			Message<?> message = MessageBuilder.withPayload("hello").setHeader(MessageHeaders.CONTENT_TYPE, "text/plain").build();
 			channels.input().send(message);
 			Message<?> outputMessage = collector.forChannel(channels.output()).take();
-			assertThat(outputMessage.getHeaders().get(MessageHeaders.CONTENT_TYPE)).isEqualTo("application/json");
+			assertThat(outputMessage.getHeaders().get(MessageHeaders.CONTENT_TYPE)).isEqualTo(MediaType.APPLICATION_JSON);
 		}
 
 		private void validateDefault(String result) throws Exception{
@@ -110,11 +113,12 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 	public static class UsingNoURIIntegrationTests extends
 			TasklaunchrequestTransformProcessorIntegrationTests {
 
-		@Test(expected = MessageTransformationException.class)
+		@Test(expected = MessagingException.class)
 		public void test() throws InterruptedException {
 			channels.input().send(new GenericMessage<Object>("hello"));
 		}
 	}
+
 
 	/**
 	 * Validates that the app handles empty payload.
@@ -123,7 +127,7 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 	public static class UsingEmptyPayloadIntegrationTests extends
 			TasklaunchrequestTransformProcessorIntegrationTests {
 
-		@Test()
+		@Test(expected = MethodArgumentNotValidException.class)
 		public void test() throws Exception {
 			channels.input().send(new GenericMessage<Object>(""));
 			assertThat(collector.forChannel(channels.output()),

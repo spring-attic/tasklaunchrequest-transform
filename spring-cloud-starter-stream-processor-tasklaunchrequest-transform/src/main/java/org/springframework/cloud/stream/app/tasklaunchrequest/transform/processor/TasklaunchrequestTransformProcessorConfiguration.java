@@ -26,9 +26,10 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.cloud.task.launcher.TaskLaunchRequest;
-import org.springframework.integration.annotation.Transformer;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -57,7 +58,8 @@ public class TasklaunchrequestTransformProcessorConfiguration {
 	@Autowired
 	private TasklaunchrequestTransformProcessorProperties processorProperties;
 
-	@Transformer(inputChannel = Processor.INPUT, outputChannel = Processor.OUTPUT)
+	@StreamListener(Processor.INPUT)
+	@SendTo(Processor.OUTPUT)
 	public Object setupRequest(String data) throws Exception{
 		Map<String, String> properties = new HashMap<String, String>();
 		Map<String, String> deploymentProperties = null;
