@@ -60,9 +60,8 @@ public class TasklaunchrequestTransformProcessorConfiguration {
 	@Autowired
 	private TasklaunchrequestTransformProcessorProperties processorProperties;
 
-//	@StreamListener(Processor.INPUT)
-//	@SendTo(Processor.OUTPUT)
-	@ServiceActivator(inputChannel = Processor.INPUT, outputChannel = Processor.OUTPUT)
+	@StreamListener(Processor.INPUT)
+	@SendTo(Processor.OUTPUT)
 	public Object setupRequest(Message<?> data) throws Exception{
 		Map<String, String> properties = new HashMap<String, String>();
 		Map<String, String> deploymentProperties = null;

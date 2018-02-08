@@ -21,7 +21,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * @author Glenn Renfro
  */
-@ConfigurationProperties
+@ConfigurationProperties("task.launch.request")
 public class TasklaunchrequestTransformProcessorProperties {
 	/**
 	 * The uri of the artifact to be applied to the TaskLaunchRequest.

@@ -75,7 +75,7 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 	/**
 	 * Validates that the app loads with default properties.
 	 */
-	@TestPropertySource(properties = "uri=" + DEFAULT_URI)
+	@TestPropertySource(properties = "task.launch.request.uri=" + DEFAULT_URI)
 	public static class UsingDefaultIntegrationTests extends
 			TasklaunchrequestTransformProcessorIntegrationTests {
 
@@ -123,7 +123,7 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 	/**
 	 * Validates that the app handles empty payload.
 	 */
-	@TestPropertySource(properties = {"uri=" + DEFAULT_URI, "applicationName=test"})
+	@TestPropertySource(properties = {"task.launch.request.uri=" + DEFAULT_URI, "task.launch.request.applicationName=test"})
 	public static class UsingEmptyPayloadIntegrationTests extends
 			TasklaunchrequestTransformProcessorIntegrationTests {
 
@@ -138,12 +138,12 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 	/**
 	 * Verify datasource properties are added to the TaskLaunchRequest.
 	 */
-	@TestPropertySource(properties = { "dataSourceUrl=myUrl",
-			"dataSourcePassword=myPassword",
-			"dataSourceUserName=myUserName",
-			"dataSourceDriverClassName=myClassName",
-			"uri=" + DEFAULT_URI,
-	        "applicationName=test"})
+	@TestPropertySource(properties = { "task.launch.request.dataSourceUrl=myUrl",
+			"task.launch.request.dataSourcePassword=myPassword",
+			"task.launch.request.dataSourceUserName=myUserName",
+			"task.launch.request.dataSourceDriverClassName=myClassName",
+			"task.launch.request.uri=" + DEFAULT_URI,
+	        "task.launch.request.applicationName=test"})
 	public static class UsingDataSourceIntegrationTests
 			extends TasklaunchrequestTransformProcessorIntegrationTests {
 
@@ -174,10 +174,10 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 	 * Verify deploymentProperties are added to the TaskLaunchRequest.
 	 */
 	@TestPropertySource(properties = {
-			"deploymentProperties=app.wow.hello=world,app.wow.foo=bar,app.wow.test=a=b,c=d,e=\"baz=bbb,nnn=mmm\"",
-			"environmentProperties=app.wow.hello2=world2,app.wow.foo2=bar2,app.wow.test2=a=b2,c2=d2,e2=\"baz=bbb,nnn=mmm2\"",
-			"uri=" + DEFAULT_URI,
-			"applicationName=test"})
+			"task.launch.request.deploymentProperties=app.wow.hello=world,app.wow.foo=bar,app.wow.test=a=b,c=d,e=\"baz=bbb,nnn=mmm\"",
+			"task.launch.request.environmentProperties=app.wow.hello2=world2,app.wow.foo2=bar2,app.wow.test2=a=b2,c2=d2,e2=\"baz=bbb,nnn=mmm2\"",
+			"task.launch.request.uri=" + DEFAULT_URI,
+			"task.launch.request.applicationName=test"})
 	public static class UsingDeploymentPropertiesIntegrationTests
 			extends TasklaunchrequestTransformProcessorIntegrationTests {
 
@@ -208,9 +208,9 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 	 *  Verify commandLineArguments are added to the TaskLaunchRequest.
 	 */
 	@TestPropertySource(properties = {
-			"commandLineArguments=--hello=world --foo=bar",
-			"uri=" + DEFAULT_URI,
-			"applicationName=test" })
+			"task.launch.request.commandLineArguments=--hello=world --foo=bar",
+			"task.launch.request.uri=" + DEFAULT_URI,
+			"task.launch.request.applicationName=test" })
 	public static class UsingCommandLineArgsIntegrationTests
 			extends TasklaunchrequestTransformProcessorIntegrationTests {
 
