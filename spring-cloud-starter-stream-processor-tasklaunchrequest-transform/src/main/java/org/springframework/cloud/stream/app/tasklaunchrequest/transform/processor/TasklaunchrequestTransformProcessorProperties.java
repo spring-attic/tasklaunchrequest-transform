@@ -21,7 +21,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * @author Glenn Renfro
  */
-@ConfigurationProperties
+@ConfigurationProperties("task.launch.request")
 public class TasklaunchrequestTransformProcessorProperties {
 	/**
 	 * The uri of the artifact to be applied to the TaskLaunchRequest.
@@ -53,6 +53,12 @@ public class TasklaunchrequestTransformProcessorProperties {
 	 *  TaskLaunchRequest.
 	 */
 	private String commandLineArguments;
+
+	/**
+	 * Comma delimited list of environment properties to be applied to the
+	 * TaskLaunchRequest.
+	 */
+	private String environmentProperties;
 
 	/**
 	 * Comma delimited list of deployment properties to be applied to the
@@ -127,5 +133,13 @@ public class TasklaunchrequestTransformProcessorProperties {
 
 	public void setApplicationName(String applicationName) {
 		this.applicationName = applicationName;
+	}
+
+	public String getEnvironmentProperties() {
+		return environmentProperties;
+	}
+
+	public void setEnvironmentProperties(String environmentProperties) {
+		this.environmentProperties = environmentProperties;
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2017 the original author or authors.
+ * Copyright 2016-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,9 +26,12 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.cloud.task.launcher.TaskLaunchRequest;
-import org.springframework.integration.annotation.Transformer;
+import org.springframework.integration.annotation.ServiceActivator;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -57,8 +60,9 @@ public class TasklaunchrequestTransformProcessorConfiguration {
 	@Autowired
 	private TasklaunchrequestTransformProcessorProperties processorProperties;
 
-	@Transformer(inputChannel = Processor.INPUT, outputChannel = Processor.OUTPUT)
-	public Object setupRequest(String message) {
+	@StreamListener(Processor.INPUT)
+	@SendTo(Processor.OUTPUT)
+	public Object setupRequest(Message<?> data) throws Exception{
 		Map<String, String> properties = new HashMap<String, String>();
 		Map<String, String> deploymentProperties = null;
 		List<String> commandLineArgs = null;
@@ -84,6 +88,9 @@ public class TasklaunchrequestTransformProcessorConfiguration {
 		}
 		if(StringUtils.hasText(processorProperties.getApplicationName())) {
 			applicationName = processorProperties.getApplicationName();
+		}
+		if(StringUtils.hasText(processorProperties.getEnvironmentProperties())) {
+			properties = parse(processorProperties.getEnvironmentProperties());
 		}
 
 		TaskLaunchRequest request = new TaskLaunchRequest(

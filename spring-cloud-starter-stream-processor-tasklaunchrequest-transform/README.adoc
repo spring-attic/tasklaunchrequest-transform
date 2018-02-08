@@ -25,16 +25,18 @@ A  byte array containing the `TaskLaunchRequest`
 The **$$tasklaunchrequest$$** $$processor$$ has the following options:
 
 //tag::configuration-properties[]
-$$application-name$$:: $$The name to be applied to the launched task.$$ *($$String$$, default: `$$<empty string>$$`)*
-$$command-line-arguments$$:: $$Space delimited list of commandLineArguments to be applied to the
+$$task.launch.request.application-name$$:: $$The name to be applied to the launched task.$$ *($$String$$, default: `$$<empty string>$$`)*
+$$task.launch.request.command-line-arguments$$:: $$Space delimited list of commandLineArguments to be applied to the
   TaskLaunchRequest.$$ *($$String$$, default: `$$<none>$$`)*
-$$data-source-driver-class-name$$:: $$The datasource driver class name to be applied to the TaskLaunchRequest.$$ *($$String$$, default: `$$<none>$$`)*
-$$data-source-password$$:: $$The datasource password to be applied to the TaskLaunchRequest.$$ *($$String$$, default: `$$<none>$$`)*
-$$data-source-url$$:: $$The datasource url to be applied to the TaskLaunchRequest.$$ *($$String$$, default: `$$<none>$$`)*
-$$data-source-user-name$$:: $$The datasource user name to be applied to the TaskLaunchRequest.$$ *($$String$$, default: `$$<none>$$`)*
-$$deployment-properties$$:: $$Comma delimited list of deployment properties to be applied to the
+$$task.launch.request.data-source-driver-class-name$$:: $$The datasource driver class name to be applied to the TaskLaunchRequest.$$ *($$String$$, default: `$$<none>$$`)*
+$$task.launch.request.data-source-password$$:: $$The datasource password to be applied to the TaskLaunchRequest.$$ *($$String$$, default: `$$<none>$$`)*
+$$task.launch.request.data-source-url$$:: $$The datasource url to be applied to the TaskLaunchRequest.$$ *($$String$$, default: `$$<none>$$`)*
+$$task.launch.request.data-source-user-name$$:: $$The datasource user name to be applied to the TaskLaunchRequest.$$ *($$String$$, default: `$$<none>$$`)*
+$$task.launch.request.deployment-properties$$:: $$Comma delimited list of deployment properties to be applied to the
  TaskLaunchRequest.$$ *($$String$$, default: `$$<none>$$`)*
-$$uri$$:: $$The uri of the artifact to be applied to the TaskLaunchRequest.$$ *($$String$$, default: `$$<none>$$`)*
+$$task.launch.request.environment-properties$$:: $$Comma delimited list of environment properties to be applied to the
+ TaskLaunchRequest.$$ *($$String$$, default: `$$<none>$$`)*
+$$task.launch.request.uri$$:: $$The uri of the artifact to be applied to the TaskLaunchRequest.$$ *($$String$$, default: `$$<none>$$`)*
 //end::configuration-properties[]
 
 == Building with Maven
