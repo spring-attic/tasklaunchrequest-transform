@@ -33,11 +33,9 @@ import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.cloud.task.launcher.TaskLaunchRequest;
 import org.springframework.http.MediaType;
 import org.springframework.integration.support.MessageBuilder;
-import org.springframework.integration.transformer.MessageTransformationException;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.MessagingException;
-import org.springframework.messaging.handler.annotation.support.MethodArgumentNotValidException;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
@@ -53,6 +51,7 @@ import static org.springframework.cloud.stream.test.matcher.MessageQueueMatcher.
  *
  * @author Glenn Renfro
  * @author Artem Bilan
+ * @author Chris Schaefer
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE,
@@ -151,10 +150,10 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 		public void testDataSources() throws Exception {
 			channels.input().send(new GenericMessage<Object>("hello"));
 			Map<String, String> environmentVariables = new HashMap<>(4);
-			environmentVariables.put("spring_datasource_url", "myUrl");
-			environmentVariables.put("spring_datasource_driverClassName", "myClassName");
-			environmentVariables.put("spring_datasource_username", "myUserName");
-			environmentVariables.put("spring_datasource_password", "myPassword");
+			environmentVariables.put("spring.datasource.url", "myUrl");
+			environmentVariables.put("spring.datasource.driver-class-name", "myClassName");
+			environmentVariables.put("spring.datasource.username", "myUserName");
+			environmentVariables.put("spring.datasource.password", "myPassword");
 			assertThat(collector.forChannel(channels.output()),
 					receivesPayloadThat(is(getDefaultRequest(
 							environmentVariables, null, null))));

@@ -69,16 +69,16 @@ public class TasklaunchrequestTransformProcessorConfiguration {
 		String applicationName = null;
 
 		if (StringUtils.hasText(processorProperties.getDataSourceUrl())) {
-			properties.put("spring_datasource_url", processorProperties.getDataSourceUrl());
+			properties.put("spring.datasource.url", processorProperties.getDataSourceUrl());
 		}
 		if (StringUtils.hasText(processorProperties.getDataSourceDriverClassName())) {
-			properties.put("spring_datasource_driverClassName", processorProperties.getDataSourceDriverClassName());
+			properties.put("spring.datasource.driver-class-name", processorProperties.getDataSourceDriverClassName());
 		}
 		if (StringUtils.hasText(processorProperties.getDataSourceUserName())) {
-			properties.put("spring_datasource_username", processorProperties.getDataSourceUserName());
+			properties.put("spring.datasource.username", processorProperties.getDataSourceUserName());
 		}
 		if (StringUtils.hasText(processorProperties.getDataSourcePassword())) {
-			properties.put("spring_datasource_password", processorProperties.getDataSourcePassword());
+			properties.put("spring.datasource.password", processorProperties.getDataSourcePassword());
 		}
 		if (StringUtils.hasLength(processorProperties.getDeploymentProperties())) {
 			deploymentProperties = parse(processorProperties.getDeploymentProperties());
