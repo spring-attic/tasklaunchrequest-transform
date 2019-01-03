@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -80,9 +81,9 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 
 		@Test
 		public void test() throws Exception {
-			channels.input().send(new GenericMessage<Object>("hello"));
-			channels.input().send(new GenericMessage<Object>("hello world"));
-			channels.input().send(new GenericMessage<Object>("hi!"));
+			channels.input().send(new GenericMessage<Object>("hello".getBytes()));
+			channels.input().send(new GenericMessage<Object>("hello world".getBytes()));
+			channels.input().send(new GenericMessage<Object>("hi!".getBytes()));
 			validateDefault((String) collector.forChannel(channels.output()).take().getPayload());
 			validateDefault((String) collector.forChannel(channels.output()).take().getPayload());
 			validateDefault((String) collector.forChannel(channels.output()).take().getPayload());
@@ -90,7 +91,7 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 
 		@Test
 		public void testHeaderContentTypeProperlySet() throws Exception {
-			Message<?> message = MessageBuilder.withPayload("hello").setHeader(MessageHeaders.CONTENT_TYPE, "text/plain").build();
+			Message<?> message = MessageBuilder.withPayload("hello".getBytes()).setHeader(MessageHeaders.CONTENT_TYPE, "text/plain").build();
 			channels.input().send(message);
 			Message<?> outputMessage = collector.forChannel(channels.output()).take();
 			assertThat(outputMessage.getHeaders().get(MessageHeaders.CONTENT_TYPE)).isEqualTo(MediaType.APPLICATION_JSON);
@@ -118,22 +119,6 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 		}
 	}
 
-
-	/**
-	 * Validates that the app handles empty payload.
-	 */
-	@TestPropertySource(properties = {"task.launch.request.uri=" + DEFAULT_URI, "task.launch.request.applicationName=test"})
-	public static class UsingEmptyPayloadIntegrationTests extends
-			TasklaunchrequestTransformProcessorIntegrationTests {
-
-		@Test()
-		public void test() throws Exception {
-			channels.input().send(new GenericMessage<Object>(""));
-			assertThat(collector.forChannel(channels.output()),
-					receivesPayloadThat(is(getDefaultRequest())));
-		}
-	}
-
 	/**
 	 * Verify datasource properties are added to the TaskLaunchRequest.
 	 */
@@ -148,7 +133,7 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 
 		@Test
 		public void testDataSources() throws Exception {
-			channels.input().send(new GenericMessage<Object>("hello"));
+			channels.input().send(new GenericMessage<Object>("hello".getBytes()));
 			Map<String, String> environmentVariables = new HashMap<>(4);
 			environmentVariables.put("spring.datasource.url", "myUrl");
 			environmentVariables.put("spring.datasource.driver-class-name", "myClassName");
@@ -161,7 +146,7 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 
 		@Test
 		public void testForApplicationName() throws Exception {
-			channels.input().send(new GenericMessage<Object>("hello"));
+			channels.input().send(new GenericMessage<Object>("hello".getBytes()));
 			TaskLaunchRequest result = objectMapper.readValue(
 					(String) collector.forChannel(channels.output()).take().
 							getPayload(), TaskLaunchRequest.class);
@@ -182,7 +167,7 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 
 		@Test
 		public void test() throws Exception {
-			channels.input().send(new GenericMessage<Object>("hello"));
+			channels.input().send(new GenericMessage<Object>("hello".getBytes()));
 			String result = (String) collector.forChannel(channels.output()).take().getPayload();
 			TaskLaunchRequest tlr = this.objectMapper.readValue(result, TaskLaunchRequest.class);
 			assertThat(tlr.getDeploymentProperties().get("c")).isEqualTo("d");
@@ -215,7 +200,7 @@ public abstract class TasklaunchrequestTransformProcessorIntegrationTests {
 
 		@Test
 		public void test() throws Exception {
-			channels.input().send(new GenericMessage<Object>("hello"));
+			channels.input().send(new GenericMessage<Object>("hello".getBytes()));
 			Map<String, String> environmentVariables = new HashMap<>(1);
 			List<String> commandLineArgs = new ArrayList<>(2);
 			commandLineArgs.add("--hello=world");
