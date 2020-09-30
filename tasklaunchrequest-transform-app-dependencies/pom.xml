@@ -5,7 +5,7 @@
 
 	<groupId>org.springframework.cloud.stream.app</groupId>
 	<artifactId>tasklaunchrequest-transform-app-dependencies</artifactId>
-	<version>2.1.4.BUILD-SNAPSHOT</version>
+	<version>2.1.4.RELEASE</version>
 	<packaging>pom</packaging>
 	<name>tasklaunchrequest-transform-app-dependencies</name>
 	<description>Spring Cloud Stream tasklaunchrequest-transform App Dependencies</description>
@@ -25,7 +25,7 @@
 			<dependency>
 				<groupId>org.springframework.cloud.stream.app</groupId>
 				<artifactId>spring-cloud-starter-stream-processor-tasklaunchrequest-transform</artifactId>
-				<version>2.1.4.BUILD-SNAPSHOT</version>
+				<version>2.1.4.RELEASE</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
